@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FB522631E8543F000E38C8D /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB522621E8543F000E38C8D /* HTTPServer.m */; };
 		7FD7F9CF1E83E659003879C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9CE1E83E659003879C1 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7FB522611E8543F000E38C8D /* HTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPServer.h; sourceTree = "<group>"; };
+		7FB522621E8543F000E38C8D /* HTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPServer.m; sourceTree = "<group>"; };
 		7FD7F9CB1E83E659003879C1 /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD7F9CE1E83E659003879C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				7FD7F9CE1E83E659003879C1 /* main.m */,
+				7FB522611E8543F000E38C8D /* HTTPServer.h */,
+				7FB522621E8543F000E38C8D /* HTTPServer.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FB522631E8543F000E38C8D /* HTTPServer.m in Sources */,
 				7FD7F9CF1E83E659003879C1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,6 +252,7 @@
 				7FD7F9D41E83E659003879C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
