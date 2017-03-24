@@ -7,11 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HTTPServer.h"
 
 int main(int argc, const char * argv[]) {
+    #pragma unused(argc)
+    #pragma unused(argv)
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        HTTPServer * server = [[HTTPServer alloc] init];
+        [server start]
+        if ( [server lastError] == nil ) {
+            [[NSRunLoop currentRunLoop] run];
+        } else {
+            NSLog(@"Error starting server: %@", server.lastError);
+        }
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
