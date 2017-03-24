@@ -14,6 +14,11 @@
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
+    
+    for (int y = 1989; y < 2018; y++) {
+        [_yearSelector addItemWithTitle:[NSString stringWithFormat:@"%d", y]];
+    }
+    
 }
 
 
@@ -23,5 +28,9 @@
     // Update the view, if already loaded.
 }
 
+- (IBAction)loginButtonPressed:(id)sender
+{
+    
+}
 
 @end

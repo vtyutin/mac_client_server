@@ -10,6 +10,9 @@
 
 @interface ViewController : NSViewController
 
+@property (weak) IBOutlet NSTextField *loginField;
+@property (weak) IBOutlet NSSecureTextField *passwordField;
+@property (weak) IBOutlet NSPopUpButton *yearSelector;
 
 @end
 
