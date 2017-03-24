@@ -53,7 +53,11 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 //
 - (void)setLastError:(NSError *)anError
 {
+<<<<<<< HEAD
     lastError = anError;
+=======
+    self.lastError = anError;
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
     
     if (lastError == nil)
     {
@@ -100,7 +104,11 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
         return;
     }
     
+<<<<<<< HEAD
     state = newState;
+=======
+    self.state = newState;
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
     [[NSNotificationCenter defaultCenter] postNotificationName:ServerNotificationStateChanged object:self];
 }
 
@@ -231,6 +239,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 }
 
 //
+<<<<<<< HEAD
 // receiveIncomingData:
 //
 // Receive new data for an incoming connection.
@@ -239,12 +248,26 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 //    notification - data received notification
 //
 - (void)receiveIncomingData:(NSNotification *)notification
+=======
+// receiveIncomingDataNotification:
+//
+// Receive new data for an incoming connection.
+//
+// Once enough data is received to fully parse the HTTP headers,
+// a HTTPResponseHandler will be spawned to generate a response.
+//
+// Parameters:
+//    notification - data received notification
+//
+- (void)receiveIncomingDataNotification:(NSNotification *)notification
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
 {
     NSFileHandle *incomingFileHandle = [notification object];
     NSData *data = [incomingFileHandle availableData];
     
     if ([data length] == 0)
     {
+<<<<<<< HEAD
         [self stopReceivingForFileHandle:incomingFileHandle];
         return;
     }
@@ -259,16 +282,49 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     if (!CFHTTPMessageAppendBytes(incomingRequest, [data bytes], [data length]))
     {
         [self stopReceivingForFileHandle:incomingFileHandle];
+=======
+        [self stopReceivingForFileHandle:incomingFileHandle close:NO];
+        return;
+    }
+    
+    CFHTTPMessageRef incomingRequest =
+    (CFHTTPMessageRef)CFDictionaryGetValue(incomingRequests, incomingFileHandle);
+    if (!incomingRequest)
+    {
+        [self stopReceivingForFileHandle:incomingFileHandle close:YES];
+        return;
+    }
+    
+    if (!CFHTTPMessageAppendBytes(
+                                  incomingRequest,
+                                  [data bytes],
+                                  [data length]))
+    {
+        [self stopReceivingForFileHandle:incomingFileHandle close:YES];
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
         return;
     }
     
     if(CFHTTPMessageIsHeaderComplete(incomingRequest))
     {
+<<<<<<< HEAD
         // ToDo handle request
         //HTTPResponseHandler *handler = [HTTPResponseHandler handlerForRequest:incomingRequest fileHandle:incomingFileHandle server:self];
         //[responseHandlers addObject:handler];
         //[self stopReceivingForFileHandle:incomingFileHandle];
         //[handler startResponse];
+=======
+        HTTPResponseHandler *handler =
+        [HTTPResponseHandler
+         handlerForRequest:incomingRequest
+         fileHandle:incomingFileHandle
+         server:self];
+        
+        [responseHandlers addObject:handler];
+        [self stopReceivingForFileHandle:incomingFileHandle close:NO];
+        
+        [handler startResponse];	
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
         return;
     }
     
@@ -283,10 +339,18 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 // Parameters:
 //    aHandler - the handler to shut down.
 //
+<<<<<<< HEAD
 //- (void)closeHandler:(HTTPResponseHandler *)aHandler
 //{
 //    [aHandler endResponse];
 //    [responseHandlers removeObject:aHandler];
 //}
+=======
+- (void)closeHandler:(HTTPResponseHandler *)aHandler
+{
+    [aHandler endResponse];
+    [responseHandlers removeObject:aHandler];
+}
+>>>>>>> 699e12c3a890848aae1e663cdfd7f9b322dfa24e
 
 @end
