@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1135FBD51E8666AF0099777A /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1135FBD41E8666AF0099777A /* APIManager.m */; };
 		7FD7F9941E83E625003879C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9931E83E625003879C1 /* AppDelegate.m */; };
 		7FD7F9971E83E625003879C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9961E83E625003879C1 /* main.m */; };
 		7FD7F99A1E83E625003879C1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9991E83E625003879C1 /* ViewController.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1135FBD31E8666AF0099777A /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		1135FBD41E8666AF0099777A /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		7FD7F98F1E83E625003879C1 /* ClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD7F9921E83E625003879C1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7FD7F9931E83E625003879C1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -84,6 +87,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1135FBCF1E8666600099777A /* API */ = {
+			isa = PBXGroup;
+			children = (
+				1135FBD31E8666AF0099777A /* APIManager.h */,
+				1135FBD41E8666AF0099777A /* APIManager.m */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 		7FD7F9861E83E625003879C1 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +120,7 @@
 		7FD7F9911E83E625003879C1 /* ClientApp */ = {
 			isa = PBXGroup;
 			children = (
+				1135FBCF1E8666600099777A /* API */,
 				7FD7F9921E83E625003879C1 /* AppDelegate.h */,
 				7FD7F9931E83E625003879C1 /* AppDelegate.m */,
 				7FD7F9981E83E625003879C1 /* ViewController.h */,
@@ -302,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1135FBD51E8666AF0099777A /* APIManager.m in Sources */,
 				7FD7F99A1E83E625003879C1 /* ViewController.m in Sources */,
 				7FD7F9971E83E625003879C1 /* main.m in Sources */,
 				7FD7F9941E83E625003879C1 /* AppDelegate.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "APIManager.h"
 
 @implementation ViewController
 
@@ -30,7 +31,7 @@
 
 - (IBAction)loginButtonPressed:(id)sender
 {
-    
+    [[APIManager sharedManager] sendRequestUsingSession];
 }
 
 @end
