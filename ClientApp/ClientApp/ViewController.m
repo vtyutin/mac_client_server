@@ -31,7 +31,29 @@
 
 - (IBAction)loginButtonPressed:(id)sender
 {
-    [[APIManager sharedManager] sendRequestUsingSession];
+    
+    [[APIManager sharedManager] signUpWithUsername:[_loginField stringValue]
+                                          password:[_passwordField stringValue]
+                                              year:[NSNumber numberWithInt:[[_yearSelector titleOfSelectedItem] intValue]]
+                                           handler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            NSLog(@"Request Error: %@", error);
+        } else{
+            NSLog(@"Request succeded: %@", response);
+            NSLog(@"Request Data: %@", data);
+            
+            NSError* jsonError = nil;
+            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                 options:NULL
+                                                                   error:&jsonError];
+            if (jsonError) {
+                NSLog(@"JSON PARSING ERRPR!!!");
+            } else {
+                NSLog(@"JSON: %@", json);
+            }
+        }
+    }];
+    
 }
 
 @end

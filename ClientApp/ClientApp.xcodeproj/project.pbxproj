@@ -87,6 +87,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		112361281E868DF300FAE6E1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
 		1135FBCF1E8666600099777A /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +127,7 @@
 		7FD7F9911E83E625003879C1 /* ClientApp */ = {
 			isa = PBXGroup;
 			children = (
+				112361281E868DF300FAE6E1 /* model */,
 				1135FBCF1E8666600099777A /* API */,
 				7FD7F9921E83E625003879C1 /* AppDelegate.h */,
 				7FD7F9931E83E625003879C1 /* AppDelegate.m */,

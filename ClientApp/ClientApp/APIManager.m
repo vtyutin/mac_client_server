@@ -23,52 +23,58 @@ static APIManager *sharedMyManager = nil;
     return sharedMyManager;
 }
 
-/* This method of sending request is deprecated */
--(void) sendRequestUsingURLConnection
+
+- (void) signUpWithUsername:(NSString*) name password:(NSString*) password year:(NSNumber*) year  handler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler
 {
-    NSURL *URL = [NSURL URLWithString:[PARAM_URL copy]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    // Prepare data to send
+    NSDictionary* json = @{
+                           @"name" : name,
+                           @"password" : password,
+                           @"birthday" : year,
+                           };
     
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               
-                               if (error) {
-                                   NSLog(@"Request Error: %@", error);
-                               } else{
-                                   NSLog(@"Request succeded: %@", response);
-                               }
-                               
-                           }];
-    
+    [self sendJsonRequest:json withHandler:handler];
 }
 
--(void) sendRequestUsingSession
+
+#pragma mark - Send request base methods
+
+-(void) sendJsonRequest:(NSDictionary*) json withHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler
+{
+    
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:json options:kNilOptions error:&error];
+    
+    if (error) {
+        handler(nil, nil, error);
+    } else {
+        NSLog(@"Sending JSON: %@", json);
+        [self sendRequestUsingSessionData:data withHandler:handler];
+        
+    }
+}
+
+
+-(void) sendRequestUsingSessionData:(NSData*) data withHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler
 {
     
     NSURL *url = [NSURL URLWithString:[PARAM_URL copy]];
     
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     
-    NSURLSessionDataTask *requestTask = [[NSURLSession sharedSession]
-                                         dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                             if (error) {
-                                                 NSLog(@"Request Error: %@", error);
-                                             } else{
-                                                 NSLog(@"Request succeded: %@", response);
-                                                 NSLog(@"Request Data: %@", data);
-                                                 
-                                                 NSError* jsonError = nil;
-                                                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                      options:NULL
-                                                                                                        error:&jsonError];
-                                                 if (jsonError) {
-                                                     NSLog(@"JSON PARSING ERRPR!!!");
-                                                 } else {
-                                                     NSLog(@"JSON: %@", json);
-                                                 }
-                                             }
-                                         }];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
     
+    NSURLSessionDataTask *requestTask = nil;
+    
+    if (data) {
+        requestTask = [session uploadTaskWithRequest:request fromData:data completionHandler:handler];
+    } else {
+        requestTask = [session dataTaskWithRequest:request completionHandler:handler];
+    }
+    
+    NSLog(@"Sending %@ request: %@", request.HTTPMethod, url.absoluteURL);
     
     [requestTask resume];
 }

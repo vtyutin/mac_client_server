@@ -12,7 +12,6 @@
 
 + (id)sharedManager;
 
--(void) sendRequestUsingURLConnection;
--(void) sendRequestUsingSession;
+- (void) signUpWithUsername:(NSString*) name password:(NSString*) password year:(NSNumber*) year handler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler;
 
 @end
