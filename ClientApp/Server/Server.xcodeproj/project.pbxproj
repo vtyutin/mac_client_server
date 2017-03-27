@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7FB522631E8543F000E38C8D /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB522621E8543F000E38C8D /* HTTPServer.m */; };
 		7FB522661E8563FB00E38C8D /* BaseResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB522651E8563FB00E38C8D /* BaseResponseHandler.m */; };
+		7FB522691E89000C00E38C8D /* AddUserResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB522681E89000C00E38C8D /* AddUserResponseHandler.m */; };
 		7FD7F9CF1E83E659003879C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9CE1E83E659003879C1 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,8 @@
 		7FB522621E8543F000E38C8D /* HTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPServer.m; sourceTree = "<group>"; };
 		7FB522641E8563FB00E38C8D /* BaseResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseResponseHandler.h; sourceTree = "<group>"; };
 		7FB522651E8563FB00E38C8D /* BaseResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseResponseHandler.m; sourceTree = "<group>"; };
+		7FB522671E89000C00E38C8D /* AddUserResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserResponseHandler.h; sourceTree = "<group>"; };
+		7FB522681E89000C00E38C8D /* AddUserResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUserResponseHandler.m; sourceTree = "<group>"; };
 		7FD7F9CB1E83E659003879C1 /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FD7F9CE1E83E659003879C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +71,8 @@
 				7FB522621E8543F000E38C8D /* HTTPServer.m */,
 				7FB522641E8563FB00E38C8D /* BaseResponseHandler.h */,
 				7FB522651E8563FB00E38C8D /* BaseResponseHandler.m */,
+				7FB522671E89000C00E38C8D /* AddUserResponseHandler.h */,
+				7FB522681E89000C00E38C8D /* AddUserResponseHandler.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FB522691E89000C00E38C8D /* AddUserResponseHandler.m in Sources */,
 				7FB522631E8543F000E38C8D /* HTTPServer.m in Sources */,
 				7FD7F9CF1E83E659003879C1 /* main.m in Sources */,
 				7FB522661E8563FB00E38C8D /* BaseResponseHandler.m in Sources */,

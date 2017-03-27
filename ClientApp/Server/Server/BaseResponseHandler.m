@@ -203,14 +203,12 @@ static NSMutableArray *registeredHandlers = nil;
 - (void)startResponse
 {
     CFHTTPMessageRef response =
-    CFHTTPMessageCreateResponse(
-                                kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
-    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (CFStringRef)@"text/html");
+    CFHTTPMessageCreateResponse(kCFAllocatorDefault, 501, NULL, kCFHTTPVersion1_1);
+    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (CFStringRef)@"application/json");
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
-    CFHTTPMessageSetBody(response,
-                         (__bridge CFDataRef)[@"{"
-                                              @"\"message\": \"OK\","
-                                              @"\"code\": 200"
+    CFHTTPMessageSetBody(response, (__bridge CFDataRef)[@"{"
+                                              @"\"message\": \"not supported\","
+                                              @"\"code\": 501"
                                               @"}"
                                      dataUsingEncoding:NSUTF8StringEncoding]);
     
@@ -301,7 +299,6 @@ static NSMutableArray *registeredHandlers = nil;
     // with any HTTP body data that may have already been received in the
     // "request" body.
     //
-    
     [incomingFileHandle waitForDataInBackgroundAndNotify];
 }
 
