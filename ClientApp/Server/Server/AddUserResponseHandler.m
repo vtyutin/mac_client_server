@@ -37,7 +37,7 @@
                   method:(NSString *)requestMethod
                      url:(NSURL *)requestURL
             headerFields:(NSDictionary *)requestHeaderFields
-{
+{    
     if ([requestURL.path hasPrefix:@"/adduser"])
     {
         return YES;
@@ -70,7 +70,6 @@
     CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
     @try
     {
-        NSLog(@"%@", headerData);
         [fileHandle writeData:(__bridge NSData *)headerData];
     }
     @catch (NSException *exception)
@@ -87,6 +86,11 @@
     }
 }
 
+//
+// addUser
+//
+// Handle adduser request and store new user data.
+//
 - (NSString*)addUser
 {
     NSData *data = (__bridge NSData *)(CFHTTPMessageCopyBody(request));

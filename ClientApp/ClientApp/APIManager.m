@@ -65,6 +65,7 @@ static APIManager *sharedMyManager = nil;
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
+    request.HTTPBody = data;
     
     NSURLSessionDataTask *requestTask = nil;
     
