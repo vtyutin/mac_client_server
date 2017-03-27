@@ -24,7 +24,7 @@ typedef enum
     NSFileHandle *listeningHandle;
     CFSocketRef socket;
     ServerState state;
-    NSMutableDictionary *incomingRequests;
+    CFMutableDictionaryRef incomingRequests;
     NSMutableSet *responseHandlers;
 }
 

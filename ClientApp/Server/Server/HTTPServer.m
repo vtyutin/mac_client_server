@@ -17,7 +17,6 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 @interface HTTPServer ()
 @property (nonatomic, readwrite, retain) NSError *lastError;
 @property (readwrite, assign) ServerState state;
-@property (nonatomic, retain) NSMutableDictionary *incomingRequests;
 @property (nonatomic, retain) NSMutableSet *responseHandlers;
 @end
 
@@ -26,7 +25,6 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 @synthesize lastError;
 @synthesize state;
 @synthesize responseHandlers;
-@synthesize incomingRequests;
 
 // init
 //
@@ -39,7 +37,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     {
         self.state = IDLE;
         self.responseHandlers = [[NSMutableSet alloc] init];
-        self.incomingRequests = [[NSMutableDictionary alloc] init];
+        incomingRequests = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
     return self;
 }
@@ -175,7 +173,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSFileHandleDataAvailableNotification object:incomingFileHandle];
-    [incomingRequests removeObjectForKey:incomingFileHandle];
+    CFDictionaryRemoveValue(incomingRequests, (__bridge const void *)(incomingFileHandle));
 }
 
 //
@@ -193,7 +191,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     [listeningHandle closeFile];
     listeningHandle = nil;
     
-    for (NSFileHandle *incomingFileHandle in incomingRequests.allKeys)
+    for (NSFileHandle *incomingFileHandle in [(NSDictionary *)CFBridgingRelease(incomingRequests) copy])
     {
         [self stopReceivingForFileHandle:incomingFileHandle close:YES];
     }
@@ -223,7 +221,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     if(incomingFileHandle)
     {
         CFHTTPMessageRef message = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, TRUE);
-        [incomingRequests setValue:CFBridgingRelease(message) forKey:incomingFileHandle];
+        CFDictionaryAddValue(incomingRequests, CFBridgingRetain(incomingFileHandle), message);
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveIncomingData:) name:NSFileHandleDataAvailableNotification object:incomingFileHandle];
         [incomingFileHandle waitForDataInBackgroundAndNotify];
@@ -251,7 +249,7 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
         return;
     }
     
-    CFHTTPMessageRef incomingRequest = CFBridgingRetain([incomingRequests objectForKey:incomingFileHandle]);
+    CFHTTPMessageRef incomingRequest = (CFHTTPMessageRef)CFDictionaryGetValue(incomingRequests, CFBridgingRetain(incomingFileHandle));
     if (!incomingRequest)
     {
         [self stopReceivingForFileHandle:incomingFileHandle close:YES];
