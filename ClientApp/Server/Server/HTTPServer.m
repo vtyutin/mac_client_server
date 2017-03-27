@@ -1,10 +1,11 @@
-//
-//  HTTPServer.m
-//  Server
-//
-//  Copyright © 2017 Harman. All rights reserved.
-//
-
+/*!
+ @header HTTPServer.h
+ 
+ @brief This class is HTTP server implementation.
+ 
+ @copyright  2017 Harman
+ @version    1.0.0
+ */
 #import "HTTPServer.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
@@ -26,10 +27,8 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
 @synthesize state;
 @synthesize responseHandlers;
 
-// init
-//
-// initialize server object.
-//
+/*! @brief initialize server object.
+ */
 - (id)init
 {
     self = [super init];
@@ -42,13 +41,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     return self;
 }
 
-// setLastError:
-//
-// Custom setter method. Stops the server
-//
-// Parameters:
-//    anError - the new error value (nil to clear)
-//
+/*! @brief Custom setter method. Stops the server.
+ *  @param anError the new error value (nil to clear)
+ */
 - (void)setLastError:(NSError *)anError
 {
     lastError = anError;
@@ -64,13 +59,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     NSLog(@"HTTPServer error: %@", self.lastError);
 }
 
-// errorWithName:
-//
-// Create error and update last error
-//
-// Parameters:
-//    errorName - error message
-//
+/*! @brief Create error and update last error.
+ *  @param errorName error message
+ */
 - (void)errorWithName:(NSString *)errorName
 {
     self.lastError = [NSError
@@ -84,13 +75,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
                                                   forKey:NSLocalizedDescriptionKey]];	
 }
 
-// setState:
-//
-// Changes the server state and posts a notification (if the state changes).
-//
-// Parameters:
-//    newState - the new state for the server
-//
+/*! @brief Changes the server state and posts a notification (if the state changes).
+ *  @param newState the new state for the server
+ */
 - (void)setState:(ServerState)newState
 {
     if (state == newState)
@@ -102,10 +89,8 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     [[NSNotificationCenter defaultCenter] postNotificationName:ServerNotificationStateChanged object:self];
 }
 
-// start
-//
-// Creates the socket and starts listening for connections on it.
-//
+/*! @brief Creates the socket and starts listening for connections on it.
+ */
 - (void)start
 {
     self.lastError = nil;
@@ -155,17 +140,13 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     self.state = RUNNING;
 }
 
-// stopReceivingForFileHandle:close:
-//
-// If a file handle is accumulating the header for a new connection, this
-// method will close the handle, stop listening to it and release the
-// accumulated memory.
-//
-// Parameters:
-//    incomingFileHandle - the file handle for the incoming request
-//    closeFileHandle - if YES, the file handle will be closed, if no it is
-//		assumed that an HTTPResponseHandler will close it when done.
-//
+/*! @brief If a file handle is accumulating the header for a new connection, this
+ *  method will close the handle, stop listening to it and release the
+ *  accumulated memory.
+ *  @param incomingFileHandle the file handle for the incoming request
+ *  @param closeFileHandle if YES, the file handle will be closed, if no it is
+ *		assumed that an HTTPResponseHandler will close it when done.
+ */
 - (void)stopReceivingForFileHandle:(NSFileHandle *)incomingFileHandle close:(BOOL)closeFileHandle
 {
     if (closeFileHandle) {
@@ -176,11 +157,8 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     CFDictionaryRemoveValue(incomingRequests, (__bridge const void *)(incomingFileHandle));
 }
 
-//
-// stop
-//
-// Stops the server.
-//
+/*! @brief Stops the server.
+ */
 - (void)stop
 {
     self.state = STOPPING;
@@ -206,13 +184,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     self.state = IDLE;
 }
 
-// receiveIncomingConnection:
-//
-// Receive the notification for a new incoming request.
-//
-// Parameters:
-//    notification - the new connection notification
-//
+/*! @brief the notification for a new incoming request.
+ *  @param notification the new connection notification
+ */
 - (void)receiveIncomingConnection:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
@@ -230,14 +204,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     [listeningHandle acceptConnectionInBackgroundAndNotify];
 }
 
-//
-// receiveIncomingData:
-//
-// Receive new data for an incoming connection.
-//
-// Parameters:
-//    notification - data received notification
-//
+/*! @brief Receive new data for an incoming connection.
+ *  @param notification data received notification
+ */
 - (void)receiveIncomingData:(NSNotification *)notification
 {
     NSFileHandle *incomingFileHandle = [notification object];
@@ -273,13 +242,9 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     [incomingFileHandle waitForDataInBackgroundAndNotify];
 }
 
-// closeHandler:
-//
-// Shuts down a response handler and removes it from the set of handlers.
-//
-// Parameters:
-//    aHandler - the handler to shut down.
-//
+/*! @brief Shuts down a response handler and removes it from the set of handlers.
+ *  @param aHandler the handler to shut down.
+ */
 - (void)closeHandler:(BaseResponseHandler *)aHandler
 {
     [aHandler endResponse];

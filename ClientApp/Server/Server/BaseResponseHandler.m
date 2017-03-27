@@ -1,9 +1,11 @@
-//
-//  BaseResponseHandler.m
-//  Server
-//
-//  Copyright © 2017 Harman. All rights reserved.
-//
+/*!
+ @header BaseResponseHandler.h
+ 
+ @brief This is base class for HTTP request handler.
+ 
+ @copyright  2017 Harman
+ @version    1.0.0
+ */
 
 #import "BaseResponseHandler.h"
 #import "HTTPServer.h"
@@ -17,32 +19,28 @@
 
 static NSMutableArray *registeredHandlers = nil;
 
-//
-// priority
-//
-// The priority determines which request handlers are given the option to
-// handle a request first. The highest number goes first
-//
-// Even if subclasses have a 0 priority, they will always receive precedence
-// over the base class, since the base class' implementation is intended as
-// an error condition only.
-//
-// returns the priority.
-//
+/*! @brief The priority determines which request handlers are given the option to
+ * handle a request first. The highest number goes first.
+ * @discussion Even if subclasses have a 0 priority, they will always receive precedence
+ * over the base class, since the base class' implementation is intended as
+ * an error condition only.
+ * @return the priority.
+ */
 + (NSUInteger)priority
 {
     return 0;
 }
 
-// Implementing the load method and invoking
+/*! @brief Implementing the load method and invoking
+ */
 + (void)load
 {
     [BaseResponseHandler registerHandler:self];
 }
 
-// registerHandler:
-// Inserts the BaseResponseHandler class into the priority list.
-//
+/*! @brief Inserts the BaseResponseHandler class into the priority list.
+ *  @param handlerClass new handler class
+ */
 + (void)registerHandler:(Class)handlerClass
 {
     if (registeredHandlers == nil)
@@ -62,19 +60,14 @@ static NSMutableArray *registeredHandlers = nil;
     [registeredHandlers insertObject:handlerClass atIndex:i];
 }
 
-// canHandleRequest:method:url:headerFields:
-//
-// Class method to determine if the response handler class can handle
-// a given request.
-//
-// Parameters:
-//    aRequest - the request
-//    requestMethod - the request method
-//    requestURL - the request URL
-//    requestHeaderFields - the request headers
-//
-// returns YES (if the handler can handle the request), NO (otherwise)
-//
+/*! @brief Class method to determine if the response handler class can handle
+ a given request.
+ @param aRequest the request
+ @param requestMethod the request method
+ @param requestURL the request URL
+ @param requestHeaderFields - the request headers
+ @return YES (if the handler can handle the request), NO (otherwise)
+ */
 + (BOOL)canHandleRequest:(CFHTTPMessageRef)aRequest
                   method:(NSString *)requestMethod
                      url:(NSURL *)requestURL
@@ -83,22 +76,14 @@ static NSMutableArray *registeredHandlers = nil;
     return YES;
 }
 
-// handlerClassForRequest:method:url:headerFields:
-//
-// Important method to edit for your application.
-//
-// This method determines (from the HTTP request message, URL and headers)
-// which
-//
-// Parameters:
-//    aRequest - the CFHTTPMessageRef, with data at least as far as the end
-//		of the headers
-//    requestMethod - the request method (GET, POST, PUT, DELETE etc)
-//    requestURL - the URL (likely only contains a path)
-//    requestHeaderFields - the parsed header fields
-//
-// returns the class to handle the request, or nil if no handler exists.
-//
+/*! @brief Important method to edit for your application.
+ @discussion This method determines (from the HTTP request message, URL and headers)
+ @param aRequest the CFHTTPMessageRef, with data at least as far as the end	of the headers
+ @param requestMethod - the request method (GET, POST, PUT, DELETE etc)
+ @param requestURL - the URL (likely only contains a path)
+ @param requestHeaderFields - the parsed header fields
+ @return the class to handle the request, or nil if no handler exists.
+*/
 + (Class)handlerClassForRequest:(CFHTTPMessageRef)aRequest method:(NSString *)requestMethod
                             url:(NSURL *)requestURL headerFields:(NSDictionary *)requestHeaderFields
 {
@@ -114,21 +99,14 @@ static NSMutableArray *registeredHandlers = nil;
     return nil;
 }
 
-// handleRequest:fileHandle:server:
-//
-// This method parses the request method and header components, invokes
-//	+[handlerClassForRequest:method:url:headerFields:] to determine a handler
-// class (if any) and creates the handler.
-//
-// Parameters:
-//    aRequest - the CFHTTPMessageRef request requiring a response
-//    requestFileHandle - the file handle for the incoming request (still
-//		open and possibly receiving data) and for the outgoing response
-//    aServer - the server that is invoking us
-//
-// returns the initialized handler (if one can handle the request) or nil
-//	(if no valid handler exists).
-//
+/*! @brief This method parses the request method and header components, invokes
+ @code +[handlerClassForRequest:method:url:headerFields:] @endcode
+ to determine a handler class (if any) and creates the handler.
+ @param aRequest the CFHTTPMessageRef request requiring a response
+ @param requestFileHandle the file handle for the incoming request (still open and possibly receiving data) and for the outgoing response
+ @param aServer the server that is invoking us
+ @return the initialized handler (if one can handle the request) or nil (if no valid handler exists).
+ */
 + (BaseResponseHandler *)handlerForRequest:(CFHTTPMessageRef)aRequest
                                 fileHandle:(NSFileHandle *)requestFileHandle
                                     server:(HTTPServer *)aServer
@@ -149,22 +127,15 @@ static NSMutableArray *registeredHandlers = nil;
     return handler;
 }
 
-// initWithRequest:method:url:headerFields:fileHandle:server:
-//
-// Init method for the handler. This method is mostly just a value copy operation
-// so that the parts of the request don't need to be reparsed.
-//
-// Parameters:
-//    aRequest - the CFHTTPMessageRef
-//    method - the request method
-//    requestURL - the URL
-//    requestHeaderFields - the CFHTTPMessageRef header fields
-//    requestFileHandle - the incoming request file handle, also used for
-//		the outgoing response.
-//    aServer - the server that spawned us
-//
-// returns the initialized object
-//
+/*! @brief Init method for the handler. This method is mostly just a value copy operation so that the parts of the request don't need to be reparsed.
+ @param aRequest - the CFHTTPMessageRef
+ @param method - the request method
+ @param requestURL - the URL
+ @param requestHeaderFields - the CFHTTPMessageRef header fields
+ @param requestFileHandle - the incoming request file handle, also used for the outgoing response.
+ @param aServer - the server that spawned us
+ @return the initialized object
+ */
 - (id)initWithRequest:(CFHTTPMessageRef)aRequest method:(NSString *)method url:(NSURL *)requestURL
          headerFields:(NSDictionary *)requestHeaderFields fileHandle:(NSFileHandle *)requestFileHandle
                server:(HTTPServer *)aServer
@@ -186,20 +157,12 @@ static NSMutableArray *registeredHandlers = nil;
     return self;
 }
 
-// startResponse
-//
-// Begin sending a response over the fileHandle. Trivial cases can
-// synchronously return a response but everything else should spawn a thread
-// or otherwise asynchronously start returning the response data.
-//
-// THIS IS THE PRIMARY METHOD FOR SUBCLASSES TO OVERRIDE. YOU DO NOT NEED
-// TO INVOKE SUPER FOR THIS METHOD.
-//
-// This method should only be invoked from HTTPServer (it needs to add the
-// object to its responseHandlers before this method is invoked).
-//
-// [server closeHandler:self] should be invoked when done sending data.
-//
+/*! @brief Begin sending a response over the fileHandle. Trivial cases can synchronously return a response but everything else should spawn a thread or otherwise asynchronously start returning the response data.
+ 
+ @discussion THIS IS THE PRIMARY METHOD FOR SUBCLASSES TO OVERRIDE. YOU DO NOT NEED TO INVOKE SUPER FOR THIS METHOD.
+ This method should only be invoked from HTTPServer (it needs to add the object to its responseHandlers before this method is invoked).
+ @code [server closeHandler:self] @endcode should be invoked when done sending data.
+ */
 - (void)startResponse
 {
     CFHTTPMessageRef response =
@@ -222,6 +185,7 @@ static NSMutableArray *registeredHandlers = nil;
         NSLog(@"exception: %@", exception);
         // Ignore the exception, it normally just means the client
         // closed the connection from the other end.
+        // So the handling will just be canceled
     }
     @finally
     {
@@ -231,22 +195,13 @@ static NSMutableArray *registeredHandlers = nil;
     }
 }
 
-//
-// endResponse
-//
-// Closes the outgoing file handle.
-//
-// You should not invoke this method directly. It should only be invoked from
-// HTTPServer (it needs to remove the object from its responseHandlers before
-// this method is invoked). To close a reponse handler, use
-// [server closeHandler:responseHandler].
-//
-// Subclasses should stop any other activity when this method is invoked and
-// invoke super to close the file handle.
-//
-// If the connection is persistent, you must set fileHandle to nil (without
-// closing the file) to prevent the connection getting closed by this method.
-//
+/*! @brief Closes the outgoing file handle.
+ @discussin You should not invoke this method directly. It should only be invoked from HTTPServer (it needs to remove the object from its responseHandlers before this method is invoked). To close a reponse handler, use
+ @code [server closeHandler:responseHandler] @endcode
+ Subclasses should stop any other activity when this method is invoked and invoke super to close the file handle.
+
+ If the connection is persistent, you must set fileHandle to nil (without closing the file) to prevent the connection getting closed by this method.
+ */
 - (void)endResponse
 {
     if (fileHandle)
@@ -259,28 +214,12 @@ static NSMutableArray *registeredHandlers = nil;
     server = nil;
 }
 
-// receiveIncomingDataNotification:
-//
-// Continues to receive incoming data for the connection. Remember that the
-// first data past the end of the headers may already have been read into
-// the request.
-//
-// Override this method to read the complete HTTP Request Body. This is a
-// complicated process if you want to handle both Content-Length and all common
-// Transfer-Encodings, so I haven't implemented it.
-//
-// If you want to handle persistent connections, you would need careful handling
-// to determine the end of the request, seek the fileHandle so it points
-// to the byte immediately after then end of this request, and then send an
-// NSFileHandleConnectionAcceptedNotification notification with the fileHandle
-// as the NSFileHandleNotificationFileHandleItem in the userInfo dictionary
-// back to the server to handle the fileHandle as a new incoming request again
-// (before setting fileHandle to nil so the connection won't get closed when this
-// handler ends).
-//
-// Parameters:
-//    notification - notification that more data is available
-//
+/*! @brief Continues to receive incoming data for the connection. Remember that the first data past the end of the headers may already have been read into the request.
+
+ @discussion Override this method to read the complete HTTP Request Body. This is a complicated process if you want to handle both Content-Length and all common Transfer-Encodings, so I haven't implemented it.
+ If you want to handle persistent connections, you would need careful handling to determine the end of the request, seek the fileHandle so it points to the byte immediately after then end of this request, and then send an NSFileHandleConnectionAcceptedNotification notification with the fileHandle as the NSFileHandleNotificationFileHandleItem in the userInfo dictionary back to the server to handle the fileHandle as a new incoming request again (before setting fileHandle to nil so the connection won't get closed when this handler ends).
+ @param notification notification that more data is available
+ */
 - (void)receiveIncomingDataNotification:(NSNotification *)notification
 {
     NSFileHandle *incomingFileHandle = [notification object];
@@ -301,10 +240,7 @@ static NSMutableArray *registeredHandlers = nil;
     [incomingFileHandle waitForDataInBackgroundAndNotify];
 }
 
-//
-// dealloc
-//
-// Stops the response if still running.
+/*! @brief Stops the response if still running. */
 //
 - (void)dealloc
 {

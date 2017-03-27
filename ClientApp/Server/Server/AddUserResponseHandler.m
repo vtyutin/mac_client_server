@@ -1,38 +1,30 @@
-//
-//  AddUserResponseHandler.m
-//  Server
-//
-//  Copyright © 2017 Harman. All rights reserved.
-//
-
+/*!
+ @header AddUserResponseHandler.h
+ 
+ @brief This is the class for "/adduser" HTTP request handler.
+ 
+ @copyright  2017 Harman
+ @version    1.0.0
+ */
 #import "AddUserResponseHandler.h"
 #import "HTTPServer.h"
 
 @implementation AddUserResponseHandler
-// load
-//
-// Implementing the load method and invoking
-// [BaseResponseHandler registerHandler:self] causes BaseResponseHandler
-// to register this class in the list of registered HTTP response handlers.
-//
+/*! @brief Implementing the load method and invoking
+ @code [BaseResponseHandler registerHandler:self] @endcode causes BaseResponseHandler to register this class in the list of registered HTTP response handlers.
+ */
 + (void)load
 {
     [BaseResponseHandler registerHandler:self];
 }
 
-// canHandleRequest:method:url:headerFields:
-//
-// Class method to determine if the response handler class can handle
-// a given request.
-//
-// Parameters:
-//    aRequest - the request
-//    requestMethod - the request method
-//    requestURL - the request URL
-//    requestHeaderFields - the request headers
-//
-// returns YES (if the handler can handle the request), NO (otherwise)
-//
+/*! @brief Class method to determine if the response handler class can handle a given request.
+ @param aRequest the request
+ @param requestMethod the request method
+ @param requestURL the request URL
+ @param requestHeaderFields the request headers
+ @return YES (if the handler can handle the request), NO (otherwise)
+ */
 + (BOOL)canHandleRequest:(CFHTTPMessageRef)aRequest
                   method:(NSString *)requestMethod
                      url:(NSURL *)requestURL
@@ -46,12 +38,8 @@
     return NO;
 }
 
-//
-// startResponse
-//
-// Since this is a simple response, we handle it synchronously by sending
-// everything at once.
-//
+/*! @brief Since this is a simple response, we handle it synchronously by sending everything at once.
+ */
 - (void)startResponse
 {
     NSDictionary *jsonResponse = [self addUser];
@@ -80,11 +68,9 @@
     }
 }
 
-//
-// addUser
-//
-// Handle adduser request and store new user data.
-//
+/*! @brief Handle adduser request and store new user data.
+ * @return dictionary that contains NSNumber for operation code (@"code" key) and result data in JSON (@"data" key)
+ */
 - (NSDictionary*)addUser
 {
     NSData *data = (__bridge NSData *)(CFHTTPMessageCopyBody(request));
