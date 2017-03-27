@@ -28,7 +28,7 @@ static APIManager *sharedMyManager = nil;
 {
     // Prepare data to send
     NSDictionary* json = @{
-                           @"name" : name,
+                           @"login" : name,
                            @"password" : password,
                            @"birthday" : year,
                            };
