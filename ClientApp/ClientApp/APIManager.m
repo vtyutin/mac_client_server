@@ -10,8 +10,8 @@
 
 @implementation APIManager
 
-//const NSString* PARAM_URL = @"http://localhost:8181/adduser";
-const NSString* PARAM_URL = @"http://192.168.50.201:8181/adduser";
+const NSString* PARAM_URL = @"http://localhost:8181/adduser";
+//const NSString* PARAM_URL = @"http://192.168.50.201:8181/adduser";
 
 
 static APIManager *sharedMyManager = nil;
@@ -93,7 +93,8 @@ static APIManager *sharedMyManager = nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody = data;
-
+    [request setTimeoutInterval:10.0]; // 10 seconds interval
+    
     // Add heders
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
@@ -110,5 +111,6 @@ static APIManager *sharedMyManager = nil;
     
     [requestTask resume];
 }
+
 
 @end

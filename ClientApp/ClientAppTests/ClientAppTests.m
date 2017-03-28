@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "APIManager.h"
 
 @interface ClientAppTests : XCTestCase
 
@@ -24,6 +25,37 @@
     [super tearDown];
 }
 
+- (void) testSignUpWithExisistingUserName
+{
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    
+    [[APIManager sharedManager] signUpWithUsername:@"qwerty"
+                                          password:@"123456"
+                                              year:[NSNumber numberWithInt:1999]
+                                           handler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                               
+                                               // checking for connection error
+                                               XCTAssertNil(error);
+                                               
+                                               // checking that data is exists
+                                               XCTAssertNotNil(data);
+                                               
+                                               NSError *jsonError = nil;
+                                               NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                    options:kNilOptions
+                                                                                                      error:&jsonError];
+                                               
+                                               XCTAssertNil(jsonError);
+                                               XCTAssertNotNil(json);
+                                               
+                                               XCTAssertEqual(409, [[json objectForKey:@"code"] integerValue]);
+                                               
+                                               dispatch_semaphore_signal(sem);
+                                           }];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+}
+
 - (void)testExample {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -35,5 +67,9 @@
         // Put the code you want to measure the time of here.
     }];
 }
+
+
+
+
 
 @end

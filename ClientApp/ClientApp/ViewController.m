@@ -55,7 +55,7 @@
                                                    
                                                    NSError* jsonError = nil;
                                                    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                        options:NULL
+                                                                                                        options:kNilOptions
                                                                                                           error:&jsonError];
                                                    if (jsonError) {
                                                        NSLog(@"JSON PARSING ERROR!!!");
