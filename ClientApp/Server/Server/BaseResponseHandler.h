@@ -24,6 +24,8 @@
     HTTPServer *server;
     /*! @brief Incoming request URL. */
     NSURL *url;
+    /*! @brief HTTP body data. */
+    NSData *requestData;
 }
 
 /*! @brief Get the handler priority.
@@ -51,11 +53,12 @@
  * @param requestHeaderFields incomming HTTP request header field
  * @param requestFileHandle incomming HTTP request file handle
  * @param aServer link to HTTPServer object
+ * @param data HTTP body in request
  * @return the link to initialized handler for this request
  */
 - (id)initWithRequest:(CFHTTPMessageRef)aRequest method:(NSString *)method url:(NSURL *)requestURL
          headerFields:(NSDictionary *)requestHeaderFields fileHandle:(NSFileHandle *)requestFileHandle
-               server:(HTTPServer *)aServer;
+               server:(HTTPServer *)aServer body:(NSData*)data;
 /*! @brief Start response creation.
  */
 - (void)startResponse;

@@ -45,6 +45,8 @@
     NSDictionary *jsonResponse = [self addUser];
     CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, [[jsonResponse valueForKey:@"code"] integerValue], NULL, kCFHTTPVersion1_1);
     
+    NSLog(@"respond with JSON: %@", jsonResponse);
+    
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (CFStringRef)@"application/json");
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
     CFHTTPMessageSetBody(response, (__bridge CFDataRef)[[jsonResponse valueForKey:@"data"]  dataUsingEncoding:NSUTF8StringEncoding]);
@@ -73,24 +75,42 @@
  */
 - (NSDictionary*)addUser
 {
-    NSData *data = (__bridge NSData *)(CFHTTPMessageCopyBody(request));
+    NSMutableDictionary *responseDictionary = [NSMutableDictionary dictionary];
     NSError *error;
-    NSDictionary* jsonRequest = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    NSDictionary* jsonRequest = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:&error];
     if (error) {
-        return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:400], @"code", @"{\"message\": \"invalid data\",\"code\": 400}", @"data", nil];
+        [responseDictionary setValue:[NSNumber numberWithInteger:400] forKey:@"code"];
+        [responseDictionary setValue:@"{\"message\": \"invalid data\",\"code\": 400}" forKey:@"data"];
+        return responseDictionary;
     }
+    
+    NSLog(@"JSON data received: %@", jsonRequest);
+    
     NSString *login = [jsonRequest valueForKey:@"login"];
     NSString *password = [jsonRequest valueForKey:@"password"];
     if ([login length] > 0 && [password length] > 0) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *savedUser = [userDefaults valueForKey:login];
         if (savedUser != nil) {
-            return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:409], @"code", @"{\"message\": \"user is already existed\",\"code\": 409}", @"data", nil];
+            [responseDictionary setValue:[NSNumber numberWithInteger:409] forKey:@"code"];
+            [responseDictionary setValue:@"{\"message\": \"user is already existed\",\"code\": 409}" forKey:@"data"];
+            return responseDictionary;
         }
         NSDictionary *dictData = [NSDictionary dictionaryWithObjectsAndKeys:login, @"login", password, @"password", nil];
         [userDefaults setValue:dictData forKey:login];
-        return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:200], @"code", @"{\"message\": \"ok\",\"code\": 200}", @"data", nil];
+        
+        NSDictionary *responseDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"code", @"ok", @"message", login, @"login", nil];
+        NSData *responseData = [NSJSONSerialization dataWithJSONObject:responseDict options:kNilOptions error:&error];
+        if (error) {
+            [responseDictionary setValue:[NSNumber numberWithInteger:501] forKey:@"code"];
+            [responseDictionary setValue:@"{\"message\": \"internal server error\",\"code\": 501}" forKey:@"data"];
+            return responseDictionary;
+        }
+        NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:200], @"code", responseStr, @"data", nil];
     }
-    return [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:400], @"code", @"{\"message\": \"invalid data\",\"code\": 400}", @"data", nil];
+    [responseDictionary setValue:[NSNumber numberWithInteger:400] forKey:@"code"];
+    [responseDictionary setValue:@"{\"message\": \"invalid data\",\"code\": 400}" forKey:@"data"];
+    return responseDictionary;    
 }
 @end

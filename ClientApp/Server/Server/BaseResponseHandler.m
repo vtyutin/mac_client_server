@@ -12,10 +12,12 @@
 
 @interface BaseResponseHandler ()
 @property (nonatomic, retain) NSFileHandle *fileHandle;
+@property (nonatomic, retain) NSData *requestData;
 @end
 
 @implementation BaseResponseHandler
 @synthesize fileHandle;
+@synthesize requestData;
 
 static NSMutableArray *registeredHandlers = nil;
 
@@ -115,6 +117,8 @@ static NSMutableArray *registeredHandlers = nil;
     NSURL *requestURL = (__bridge NSURL *)CFHTTPMessageCopyRequestURL(aRequest);
     NSString *method = (__bridge NSString *)CFHTTPMessageCopyRequestMethod(aRequest);
     
+    NSData *requestBody = (__bridge NSData *)CFHTTPMessageCopyBody(aRequest);
+    
     Class classForRequest =
     [self handlerClassForRequest:aRequest method:method url:requestURL headerFields:requestHeaderFields];
     
@@ -122,7 +126,7 @@ static NSMutableArray *registeredHandlers = nil;
                                                                         url:requestURL
                                                                headerFields:requestHeaderFields
                                                                  fileHandle:requestFileHandle
-                                                                     server:aServer];
+                                                                     server:aServer body:requestBody];
     
     return handler;
 }
@@ -138,16 +142,17 @@ static NSMutableArray *registeredHandlers = nil;
  */
 - (id)initWithRequest:(CFHTTPMessageRef)aRequest method:(NSString *)method url:(NSURL *)requestURL
          headerFields:(NSDictionary *)requestHeaderFields fileHandle:(NSFileHandle *)requestFileHandle
-               server:(HTTPServer *)aServer
+               server:(HTTPServer *)aServer body:(NSData*)data
 {
     self = [super init];
     if (self != nil)
     {
-        request = (CFHTTPMessageRef)aRequest;
+        request = aRequest;
         requestMethod = method;
         url = requestURL;
         headerFields = requestHeaderFields;
         self.fileHandle = requestFileHandle;
+        self.requestData = data;
         server = aServer;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveIncomingDataNotification:) name:NSFileHandleDataAvailableNotification object:fileHandle];

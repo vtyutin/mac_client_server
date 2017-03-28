@@ -229,14 +229,25 @@ NSString * const ServerNotificationStateChanged = @"ServerNotificationStateChang
     {
         [self stopReceivingForFileHandle:incomingFileHandle close:YES];
     }
-        
+    
+    NSData *message = (__bridge NSData *)CFHTTPMessageCopySerializedMessage(incomingRequest);
+    NSString *messageStr = [[NSString alloc] initWithData:message encoding:NSUTF8StringEncoding];
+    NSLog(@"received request message: %@", messageStr);
+    
+    NSData *requestBody = (__bridge NSData *)CFHTTPMessageCopyBody(incomingRequest);
+    NSLog(@"received request body: %@", requestBody);
+    
     if(CFHTTPMessageIsHeaderComplete(incomingRequest))
     {
-        BaseResponseHandler *handler = [BaseResponseHandler handlerForRequest:incomingRequest fileHandle:incomingFileHandle server:self];
-        [responseHandlers addObject:handler];
-        [self stopReceivingForFileHandle:incomingFileHandle close:NO];
-        [handler startResponse];
-        return;
+        NSString *contentLength = (__bridge NSString*)CFHTTPMessageCopyHeaderFieldValue(incomingRequest, (CFStringRef)@"Content-Length");
+        NSInteger lenght = [contentLength integerValue];
+        if (lenght == 0 || (requestBody.length == lenght)) {
+            BaseResponseHandler *handler = [BaseResponseHandler handlerForRequest:incomingRequest fileHandle:incomingFileHandle server:self];
+            [responseHandlers addObject:handler];
+            //[self stopReceivingForFileHandle:incomingFileHandle close:NO];
+            [handler startResponse];
+            return;
+        }
     }
     
     [incomingFileHandle waitForDataInBackgroundAndNotify];
