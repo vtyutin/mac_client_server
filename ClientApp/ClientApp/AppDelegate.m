@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  ClientApp
 //
-//  Created by Vladimir Tyutin on 23/03/2017.
+//  Created by Alexander Davydov on 23/03/2017.
 //  Copyright © 2017 Harman. All rights reserved.
 //
 
@@ -21,6 +21,16 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+}
+
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
+{
+    if (flag) {
+        return NO;
+    } else {
+        [[[[NSApplication sharedApplication] windows] firstObject] makeKeyAndOrderFront:self];
+        return YES;
+    }
 }
 
 

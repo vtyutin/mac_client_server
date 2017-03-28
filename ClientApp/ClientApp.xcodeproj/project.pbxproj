@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		1135FBD51E8666AF0099777A /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1135FBD41E8666AF0099777A /* APIManager.m */; };
 		1185C84C1E88FF1700ADAB33 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1185C84B1E88FF1700ADAB33 /* MainViewController.m */; };
-		1185C8511E88FF2F00ADAB33 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1185C84F1E88FF2F00ADAB33 /* SignInViewController.m */; };
-		118B7B191E89099100107C8F /* SignInWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118B7B181E89099100107C8F /* SignInWindowController.m */; };
 		118B7B1D1E890B0500107C8F /* SignUpWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118B7B1B1E890B0500107C8F /* SignUpWindowController.m */; };
 		7FD7F9941E83E625003879C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9931E83E625003879C1 /* AppDelegate.m */; };
 		7FD7F9971E83E625003879C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD7F9961E83E625003879C1 /* main.m */; };
@@ -50,10 +48,6 @@
 		1135FBD41E8666AF0099777A /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		1185C84A1E88FF1700ADAB33 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		1185C84B1E88FF1700ADAB33 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		1185C84E1E88FF2F00ADAB33 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
-		1185C84F1E88FF2F00ADAB33 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
-		118B7B171E89099100107C8F /* SignInWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInWindowController.h; sourceTree = "<group>"; };
-		118B7B181E89099100107C8F /* SignInWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInWindowController.m; sourceTree = "<group>"; };
 		118B7B1A1E890B0500107C8F /* SignUpWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpWindowController.h; sourceTree = "<group>"; };
 		118B7B1B1E890B0500107C8F /* SignUpWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpWindowController.m; sourceTree = "<group>"; };
 		7FD7F98F1E83E625003879C1 /* ClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,10 +137,6 @@
 				7FD7F9951E83E625003879C1 /* Supporting Files */,
 				1185C84A1E88FF1700ADAB33 /* MainViewController.h */,
 				1185C84B1E88FF1700ADAB33 /* MainViewController.m */,
-				1185C84E1E88FF2F00ADAB33 /* SignInViewController.h */,
-				1185C84F1E88FF2F00ADAB33 /* SignInViewController.m */,
-				118B7B171E89099100107C8F /* SignInWindowController.h */,
-				118B7B181E89099100107C8F /* SignInWindowController.m */,
 				118B7B1A1E890B0500107C8F /* SignUpWindowController.h */,
 				118B7B1B1E890B0500107C8F /* SignUpWindowController.m */,
 			);
@@ -339,9 +329,7 @@
 				7FD7F99A1E83E625003879C1 /* ViewController.m in Sources */,
 				7FD7F9971E83E625003879C1 /* main.m in Sources */,
 				1185C84C1E88FF1700ADAB33 /* MainViewController.m in Sources */,
-				118B7B191E89099100107C8F /* SignInWindowController.m in Sources */,
 				118B7B1D1E890B0500107C8F /* SignUpWindowController.m in Sources */,
-				1185C8511E88FF2F00ADAB33 /* SignInViewController.m in Sources */,
 				7FD7F9941E83E625003879C1 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

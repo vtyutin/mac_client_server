@@ -28,13 +28,4 @@
     [[NSApplication sharedApplication] runModalForWindow:[windowController window]];
 }
 
-- (IBAction)openSignIn:(id)sender
-{
-    NSStoryboard *storyboard = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    NSWindowController *windowController = [storyboard instantiateControllerWithIdentifier:@"SignIn"];
-    
-    [[NSApplication sharedApplication] runModalForWindow:[windowController window]];
-}
-
 @end

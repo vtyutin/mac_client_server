@@ -12,6 +12,7 @@
 
 + (id)sharedManager;
 
+- (void) signInWithUsername:(NSString*) name password:(NSString*) password handler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler;
 - (void) signUpWithUsername:(NSString*) name password:(NSString*) password year:(NSNumber*) year handler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler;
 
 @end
