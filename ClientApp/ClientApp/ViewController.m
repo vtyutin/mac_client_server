@@ -14,8 +14,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
-    
     for (int y = 1989; y < 2018; y++) {
         [_yearSelector addItemWithTitle:[NSString stringWithFormat:@"%d", y]];
     }
@@ -25,8 +23,6 @@
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];
-    
-    // Update the view, if already loaded.
 }
 
 - (IBAction)signUpButtonPressed:(id)sender

@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "APIManager.h"
+#import "Utils.h"
 
 @interface ClientAppTests : XCTestCase
 
@@ -17,11 +18,9 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
@@ -56,19 +55,70 @@
     dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+
+- (void) testSignUpWithInvalidData
+{
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    
+    [[APIManager sharedManager] signUpWithUsername:@""
+                                          password:@""
+                                              year:[NSNumber numberWithInt:1999]
+                                           handler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                               // checking for connection error
+                                               XCTAssertNil(error);
+                                               
+                                               // checking that data is exists
+                                               XCTAssertNotNil(data);
+                                               
+                                               NSError *jsonError = nil;
+                                               NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                    options:kNilOptions
+                                                                                                      error:&jsonError];
+                                               
+                                               XCTAssertNil(jsonError);
+                                               XCTAssertNotNil(json);
+                                               
+                                               XCTAssertEqual(400, [[json objectForKey:@"code"] integerValue]);
+                                               
+                                               dispatch_semaphore_signal(sem);
+                                           }];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+
+- (void) testSignUpWithNewUserName
+{
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    
+    NSString *newName = [Utils randomString];
+    
+    [[APIManager sharedManager] signUpWithUsername:newName
+                                          password:@"123456"
+                                              year:[NSNumber numberWithInt:1999]
+                                           handler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                               
+                                               // checking for connection error
+                                               XCTAssertNil(error);
+                                               
+                                               // checking that data is exists
+                                               XCTAssertNotNil(data);
+                                               
+                                               NSError *jsonError = nil;
+                                               NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
+                                                                                                    options:kNilOptions
+                                                                                                      error:&jsonError];
+                                               
+                                               XCTAssertNil(jsonError);
+                                               XCTAssertNotNil(json);
+                                               
+                                               XCTAssertTrue([newName isEqualToString:[json objectForKey:@"login"]]);
+                                               
+                                               dispatch_semaphore_signal(sem);
+                                           }];
+    
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
 }
-
-
 
 
 

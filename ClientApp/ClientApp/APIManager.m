@@ -11,7 +11,6 @@
 @implementation APIManager
 
 const NSString* PARAM_URL = @"http://localhost:8181/adduser";
-//const NSString* PARAM_URL = @"http://192.168.50.201:8181/adduser";
 
 
 static APIManager *sharedMyManager = nil;
