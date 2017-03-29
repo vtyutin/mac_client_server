@@ -26,22 +26,6 @@ static APIManager *sharedMyManager = nil;
 /*! @brief Send the sign in information to server
  *  @param name - user name
  *  @param password - user password
- *  @param handler - block to handle response
- */
-- (void) signInWithUsername:(NSString*) name password:(NSString*) password handler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler
-{
-    // Prepare data to send
-    NSDictionary* json = @{@"login" : name,
-                           @"password" : password,
-                           };
-    
-    [self sendJsonRequest:json withHandler:handler];
-}
-
-
-/*! @brief Send the sign in information to server
- *  @param name - user name
- *  @param password - user password
  *  @param year - user birthday year
  *  @param handler - block to handle response
  */
@@ -50,8 +34,7 @@ static APIManager *sharedMyManager = nil;
     // Prepare data to send
     NSDictionary* json = @{@"login" : name,
                            @"password" : password,
-                           @"birthday" : year,
-                           };
+                           @"birthday" : year};
     
     [self sendJsonRequest:json withHandler:handler];
 }
@@ -65,7 +48,6 @@ static APIManager *sharedMyManager = nil;
  */
 -(void) sendJsonRequest:(NSDictionary*) json withHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error)) handler
 {
-    
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:json options:kNilOptions error:&error];
     
@@ -96,7 +78,7 @@ static APIManager *sharedMyManager = nil;
     
     // Add heders
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-
+    
     NSURLSessionDataTask *requestTask = nil;
     
     if (data) {

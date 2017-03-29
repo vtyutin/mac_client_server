@@ -18,6 +18,9 @@
     [super viewDidLoad];
 }
 
+/*!
+ *  @brief Open signup modal window
+ */
 - (IBAction)openSignUp:(id)sender
 {
     NSStoryboard *storyboard = [NSStoryboard storyboardWithName:@"Main" bundle:nil];

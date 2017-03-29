@@ -10,8 +10,10 @@
 
 @interface Utils : NSObject
 
-
-+ (NSString *) randomStringWithLength: (NSInteger) nameLength;
+/*! @brief Creates new random string with length between 0 and 15 */
 + (NSString *) randomString;
+
+/*! @brief Creates new random string with length between 0 and stringLength */
++ (NSString *) randomStringWithLength: (NSInteger) stringLength;
 
 @end

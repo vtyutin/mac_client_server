@@ -10,8 +10,11 @@
 
 @interface ViewController : NSViewController
 
+/*! @brief Field to enter login */
 @property (weak) IBOutlet NSTextField *loginField;
+/*! @brief Secure field to enter password */
 @property (weak) IBOutlet NSSecureTextField *passwordField;
+/*! @brief Popup list to chose year of birth */
 @property (weak) IBOutlet NSPopUpButton *yearSelector;
 
 @end

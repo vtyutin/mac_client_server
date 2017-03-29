@@ -25,6 +25,9 @@
     [super setRepresentedObject:representedObject];
 }
 
+/*!
+ * @brief Sign up button action
+ */
 - (IBAction)signUpButtonPressed:(id)sender
 {
     
